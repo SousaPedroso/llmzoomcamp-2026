@@ -2,3 +2,8 @@
 *.env
 
 *.pyc
+
+*faq.db*
+*.db
+*.db-shm
+*.db-wal
