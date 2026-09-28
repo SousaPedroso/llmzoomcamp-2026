@@ -30,7 +30,7 @@ class RAGBase:
         instructions=INSTRUCTIONS,
         prompt_template=USER_PROMPT_TEMPLATE,
         course="llm-zoomcamp",
-        model="gemini-3.5-flash"
+        model="gemini-3.5-flash-lite"
     ):
         self.index = index
         self.llm_client = llm_client
@@ -70,7 +70,7 @@ class RAGBase:
     def llm(self, prompt):
         input_messages = [
         {
-            'role': 'system',
+            'role': 'model',
             'parts': [
                 {"text": self.instructions}
             ],
