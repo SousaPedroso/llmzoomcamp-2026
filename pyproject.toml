@@ -10,6 +10,13 @@ dependencies = [
     "minsearch>=0.1.0",
     "openai>=2.41.0",
     "python-dotenv>=1.2.2",
-    "requests>=2.34.2",
+    "requests>=2.28.1",
     "sqlitesearch>=0.1.0",
 ]
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
