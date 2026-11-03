@@ -89,3 +89,7 @@ for it in range(MAX_ITERATIONS):
 ```
 
 
+
+
+## Busca Vetorial
+
