@@ -93,3 +93,12 @@ for it in range(MAX_ITERATIONS):
 
 ## Busca Vetorial
 
+Realizar a busca por um texto, mesmo que buscando a palavra num documento, isso não considera a semântica do texto, apenas a presença da palavra. A busca vetorial, por outro lado, considera o significado do texto e retorna resultados mais relevantes. Para isso, é necessário transformar o texto em vetores numéricos (embeddings) que representam o significado do texto.
+
+Os embeddings são gerados por modelos de linguagem treinados para capturar o significado semântico do texto. Cada documento é transformado em um vetor de alta dimensão, e esses vetores são armazenados em um índice vetorial. Quando uma pergunta é feita, ela também é transformada em um vetor, e a busca é realizada comparando esse vetor com os vetores dos documentos no índice.
+
+A busca semântica é feita em duas etapas: primeiro, o texto da pergunta é transformado em um vetor (embedding) e, em seguida, esse vetor é comparado com os vetores dos documentos para encontrar os mais próximos. A proximidade entre vetores é medida por uma métrica de similaridade, como a distância euclidiana ou a similaridade do cosseno.
+
+A busca vetorial, inicialmente se deu sem persistência dos dados, via [min search](./busca_vetorial/vector_search.ipynb).  Após, seguimos com o uso de persistência, em sqlite, conforme o [sqlite_vector_search](./busca_vetorial/sqlite_vector_search.ipynb). Por fim, com uma persistência mais robusta, via [pgvector](./busca_vetorial/pg_vector_sarch.ipynb).
+
+
