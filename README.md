@@ -102,3 +102,31 @@ A busca semântica é feita em duas etapas: primeiro, o texto da pergunta é tra
 A busca vetorial, inicialmente se deu sem persistência dos dados, via [min search](./busca_vetorial/vector_search.ipynb).  Após, seguimos com o uso de persistência, em sqlite, conforme o [sqlite_vector_search](./busca_vetorial/sqlite_vector_search.ipynb). Por fim, com uma persistência mais robusta, via [pgvector](./busca_vetorial/pg_vector_sarch.ipynb).
 
 
+## Avaliação
+
+Avaliar a resposta do modelo é uma tarefa complexa, pois envolve aspectos subjetivos e objetivos. A avaliação pode ser feita de várias maneiras, incluindo métricas automáticas, revisões humanas e testes de desempenho. De modo geral, pode ser offlinete (numa base de dados de perguntas e respostas) ou online (avaliando a resposta do modelo em tempo real, geralmente por feedback de usuários).
+
+A avaliação pode medir a função de busca (retornar os documentos corretos), bem como o uso de ferramentas do agente e o RAG (se o agente gera boas respostas).
+
+### Busca
+
+Para avaliar a busca/pesquisa, precisamos determinar um dataset de referência. Este dataset precisa de perguntas em que sabemos quais os documentos são a resposta correta. Geralmente, esse conjunto é denominado como 'gold standard' ou 'ground truth'.
+
+Algumas formas de gerar o conjunto de referência incluem:
+- Anotação manual olhando os documentos e escrevendo as perguntas.
+- Coletar as perguntas dos usuários e rotular as respostas corretas.
+- Geração sintética de perguntas e respotas a partir de um LLM (usada aqui no curso).
+
+#### Métricas
+
+Para avaliar a busca, as principais métricas são a HIT Rate (taxa de acerto) e a MRR (Mean Reciprocal Rank). A HIT Rate mede a proporção de perguntas em que pelo menos um dos documentos retornados é relevante (ideia semelhante a um recall). A MRR mede a posição do primeiro documento relevante na lista de resultados, sendo mais sensível à ordem dos resultados, semelhando-se a uma precisão ponderada.
+
+### RAG/Agentes
+
+A avaliação de agentes exige mais complexidade, por availiar o pipeline como um todo. Isto é, não apenas a busca, mas também a capacidade do agente de usar ferramentas, gerar respostas e interagir com o usuário. Dentre as formas de avaliação, uma das principais é a partir de ground truth questions.
+
+A avaliação por **ground truth** envolve a criação de um conjunto de perguntas e respostas esperadas, que são usadas para testar o agente. O agente é executado com essas perguntas, e suas respostas são comparadas com as respostas esperadas, se estão próximas. Assim, basicamente o fluxo se dá por A -> B -> A', onde A é a resposta esperada, B é a questão gerado por essa resposta e A' é a resposta do agente. Se A' for próxima de A, o agente está funcionando bem.
+
+Outra forma de avaliação também possível se dá por RAG, através de utilizar um LLM como juiz. Forma também offline, tal como com **ground truth**, mas aqui a ideia é verificar se as respostas são boas o suficiente. A ideia se assemelha ao feito por **ground truth**, mas aqui o juiz é um LLM, que avalia se a resposta do agente é boa o suficiente, sem necessariamente ter uma resposta esperada. A avaliação por LLM juiz pode ser feita de forma automática, mas também é recomendado envolver revisão humana para garantir a qualidade das avaliações.
+
+Para a avaliação via RAG, também aproveitamos da mesma configuração das outras avaliações, com o fluxo A -> B -> A', mas aqui nesse caso o A' vem de um agente, ao invés de um pipeline RAG. Assim, aqui também usamos um juiz LLM para avaliar se a resposta do agente é boa o suficiente, sem necessariamente ter uma resposta esperada. A avaliação por LLM juiz pode ser feita de forma automática, mas também é recomendado envolver revisão humana para garantir a qualidade das avaliações. Também nesse caso, pode ser considerado o uso de trajetória, em que basicamente é olhar se o agente está fazendo o que deveria fazer, se está usando as ferramentas corretas, se está buscando corretamente, etc. A ideia é que o juiz LLM avalie a trajetória do agente, e não apenas a resposta final.
